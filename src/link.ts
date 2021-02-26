@@ -3,7 +3,8 @@ import { ApolloLink, Operation, split } from 'apollo-link'
 import { WebSocketLink } from 'apollo-link-ws'
 import { onError } from 'apollo-link-error'
 import * as ws from 'ws'
-import { HTTPLinkDataloader } from 'http-link-dataloader'
+import { createHttpLink } from 'apollo-link-http'
+import 'cross-fetch/polyfill'
 
 export function makePrismaLink({
   endpoint,
@@ -14,7 +15,7 @@ export function makePrismaLink({
   token?: string
   debug?: boolean
 }): ApolloLink {
-  const httpLink = new HTTPLinkDataloader({
+  const httpLink = createHttpLink({
     uri: endpoint,
     headers: token ? { Authorization: `Bearer ${token}` } : {},
   })
